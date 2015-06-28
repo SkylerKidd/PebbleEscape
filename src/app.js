@@ -33,11 +33,19 @@ var bar_partition = new UI.Rect({
 
 // temp/hardcoded variables ---------remove---------
 var call_number = '+14258762036';
-var sms_data = [
-  {recipients: ['+14258762036'], body: 'Yo, I think I might be dead here in a second, so you should call me. :l'},
-  {recipients: [], body: ''},
-  {recipients: [], body: ''}
-];
+
+var sms_recipients = ['+14258762036'];
+
+var sms_levels = [{
+    body: '',
+    play: ''
+  },{
+    body: 'Yo, I think I might be dead here in a second, so you should call me. :l',
+    play: ''
+  },{
+    body: '',
+    play: ''
+}];
 
 // Prog Variables
 var escalation_level = 0;
@@ -61,8 +69,17 @@ if (options.call){
 }
 
 if (options.recipients) {
-  sms_data = options.recipients;
-  console.log('sms_data: ' + sms_data);
+  if (options.recipients.length > 0){
+    sms_recipients = options.recipients;
+    console.log('sms_recipients: ' + sms_recipients);
+  } else {
+  sms_recipients = [options.call];
+  }
+}
+
+if (options.levels) {
+  sms_levels = options.levels;
+  console.log('sms_levels: ' + sms_levels);
 }
 
 for (var i = 0; i < localStorage.length; i++) {
@@ -79,7 +96,9 @@ main_window.on('longpress', 'down', function(e) {
 main_window.on('click', 'up', function(e) {
   Vibe.vibrate('short');
   console.log(escalation_level);
-  escalation_level += 1;
+  if (escalation_level < 2) {
+    escalation_level += 1;
+  }
   setTimeout(function(){
     escalation_level = 0;
   }, 10000);
@@ -92,12 +111,13 @@ main_window.on('click', 'select', function(e) {
     type: 'json',
     method: 'POST',
     data: {
-      to: sms_data[escalation_level].recipients,
-      body: sms_data[escalation_level].body
+      to: sms_recipients,
+      body: sms_levels[escalation_level].body
     },
   }, function(d){
     Vibe.vibrate('short');
-    console.log('Successful text(s).');
+    console.log('Successful text(s) to: ' + sms_recipients);
+    console.log('Text(s) body: ' + sms_levels[escalation_level].body);
   }, function(error){
     Vibe.vibrate('double');
     if (error){
@@ -116,10 +136,12 @@ main_window.on('click', 'down', function(e){
     method: 'POST',
     data: {
       to: call_number,
+      play: sms_levels[escalation_level].play
     },
   }, function(d){
     Vibe.vibrate('short');
-    console.log('Successful call.');
+    console.log('Successful call to ' + call_number);
+    console.log('Play file: ' + sms_levels[escalation_level].play);
   }, function(error){
     Vibe.vibrate('double');
     if (error){
