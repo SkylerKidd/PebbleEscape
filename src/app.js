@@ -34,9 +34,9 @@ var bar_partition = new UI.Rect({
 // temp/hardcoded variables ---------remove---------
 var call_number = '+14258762036';
 var sms_data = [
-  {recipiants: ['+14258762036'], body: 'Yo, I think I might be dead here in a second, so you should call me. :l'},
-  {recipiants: [], body: ''},
-  {recipiants: [], body: ''}
+  {recipients: ['+14258762036'], body: 'Yo, I think I might be dead here in a second, so you should call me. :l'},
+  {recipients: [], body: ''},
+  {recipients: [], body: ''}
 ];
 
 // Prog Variables
