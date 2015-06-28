@@ -4,7 +4,7 @@
         "configurable"
     ],
     "companyName": "f.s.kidd@gmail.com",
-    "longName": "PebbleEscape",
+    "longName": "Phoneyscape",
     "projectType": "pebblejs",
     "resources": {
         "media": [
@@ -32,8 +32,8 @@
         ]
     },
     "sdkVersion": "3",
-    "shortName": "PebbleEscape",
-    "uuid": "21e1de02-1d29-402b-84e8-2eaf4a84e12f",
+    "shortName": "Phoneyscape",
+    "uuid": "41edd655-3c32-4afe-b9ec-bcb82730e770",
     "versionCode": 1,
     "versionLabel": "1.0",
     "watchapp": {

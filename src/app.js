@@ -11,29 +11,41 @@ var main_window = new UI.Window({
 var main_time = new UI.TimeText({
   position: new Vector2(0, 65),
   size: new Vector2(144, 30),
-  font: 'gothic-24-bold',
+  font: 'roboto-bold-subset-49',
   textAlign: 'center',
   text: '%I:%M'
 });
 
+// temp/hardcoded variables ---------remove---------
 var call_number = '+14258762036';
+var sms_data = [
+  {recipiants: ['+14258762036'], message: 'Yo, I think I might be dead here in a second, so you should call me. :l'},
+  {recipiants: [], message: ''},
+  {recipiants: [], message: ''}
+];
+
+// Prog Variables
 var escalation_level = 0;
-Settings.option({
-  keyme: 'blah'
-});
 Settings.config({
   url: 'http://config.phoneyscape.com/',
   },
   function(e) {
-    console.log('opening configurable');
+    console.log('Opening configurable.');
   },
   function(e) {
-    console.log('closed configurable');
+    console.log('Closed configurable.');
   }
 );
 
+
 var options = Settings.option();
 console.log(JSON.stringify(options));
+
+if (options.call){
+  call_number = options.call;
+  console.log('call_number: ' + call_number);
+}
+
 
 for (var i = 0; i < localStorage.length; i++) {
   var key = localStorage.key(i);
@@ -42,18 +54,7 @@ for (var i = 0; i < localStorage.length; i++) {
 
 // Selection Actions
 main_window.on('longpress', 'down', function(e) {
-  var to_num_opt = UI.Menu({
-    sections: [{
-      items: [{
-        title: 'Change Number?',
-        subtitle: 'Back for "no"'
-      }]
-    }]
-  });
-  to_num_opt.on('click', 'select', function(e){
-    call_number = '';
-  });
-  to_num_opt.show();
+
 });
 
 // Main Actions
@@ -95,7 +96,7 @@ main_window.on('click', 'down', function(e){
     type: 'json',
     method: 'POST',
     data: {
-      to: to_number,
+      to: call_number,
     },
   }, function(d){
     Vibe.vibrate('short');
